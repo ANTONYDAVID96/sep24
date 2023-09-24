@@ -1,5 +1,5 @@
 <html>
 <body>
-<h2>Demo Project !</h2>
+<h2>Testing the CI/CD !</h2>
 </body>
 </html>
