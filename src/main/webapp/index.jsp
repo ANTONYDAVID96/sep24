@@ -1,5 +1,5 @@
 <html>
 <body>
-<h2>Testing the CI/CD !</h2>
+<h2>Testing the CI/CD ! testing the Build periodically </h2>
 </body>
 </html>
