@@ -1,6 +1,6 @@
 pipeline {
     agent any
- triggers { pollSCM('H/05 * * * * ') }
+ 
     stages {
         stage('SCM') {
             steps {
@@ -13,10 +13,33 @@ pipeline {
 		sh 'mvn install'
             }
         }
-	stage('Deployment') {
+        stage('Build Docker Image') {
+
             steps {
-		deploy adapters: [tomcat9(credentialsId: 'web', path: '', url: 'http://localhost:8585/')], contextPath: 'demo-pipe', war: '**/*.war'
+                script {
+                    app = docker.build("dockerpandian/oct")
+                    app.inside {
+                        sh 'echo $(curl localhost:8080)'
+                    }
+                }
             }
         }
+        stage('Push Docker Image') {
+
+            steps {
+                script {
+                    docker.withRegistry('https://registry.hub.docker.com', 'docker') {
+                        app.push("${env.BUILD_NUMBER}")
+                        app.push("latest")
+                    }
+                }
+            }
+        }
+      stage("Deploy To Kuberates Cluster"){
+	    steps {
+        sh 'kubectl apply -f sample.yml'
+               }
+	  }
+       
     }
 }
