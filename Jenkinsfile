@@ -37,7 +37,7 @@ pipeline {
         }
       stage("Deploy To Kuberates Cluster"){
 	    steps {
-        sh 'kubectl apply -f test.yml'
+                     sh 'kubectl apply -f test.yml'
                }
 	  }
        
